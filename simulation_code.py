@@ -4,15 +4,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import mysql.connector
 
-# --- Step 1: Connect to MySQL
+# Connect to MySQL
 conn = mysql.connector.connect(
     host='localhost',
     user='root',
-    password='DhyanV@09876',  # 🔁 Replace with your actual password
+    password='(password)',  # Use MySQL password
     database='inventory_project'
 )
 
-# --- Step 2: Load demand data grouped by SKU and date
+# Load demand data grouped by SKU and date
 query = """
 SELECT 
     DATE(date_time) AS date,
@@ -24,7 +24,7 @@ ORDER BY date ASC
 """
 df = pd.read_sql(query, conn)
 
-# --- Step 3: Simulate inventory for each SKU
+# Simulate inventory for each SKU
 simulation_results = []
 reorder_point = 100
 order_quantity = 300
@@ -57,7 +57,7 @@ for sku in df['sku'].unique():
 
     simulation_results.append(sku_data)
 
-# --- Step 4: Combine and plot
+# Combine and plot
 final_simulation = pd.concat(simulation_results)
 example_sku = final_simulation[final_simulation['sku'] == final_simulation['sku'].unique()[0]]
 
