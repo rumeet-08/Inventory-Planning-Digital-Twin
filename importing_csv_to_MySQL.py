@@ -1,23 +1,23 @@
 import pandas as pd
 import mysql.connector
 
-# === Step 1: Load the CSV ===
-csv_file = r'C:\Users\rvagh\Downloads\demand_data.csv'  # update path if needed
+# Load the CSV
+csv_file = r'C:\Users\rvagh\Downloads\demand_data.csv' 
 df = pd.read_csv(csv_file)
 
-# === Step 2: Convert date column ===
+# Convert date column 
 df['date_time'] = pd.to_datetime(df['date_time'], format='%m/%d/%Y')
 
-# === Step 3: Connect to MySQL ===
+# Connect to MySQL 
 conn = mysql.connector.connect(
     host='localhost',
-    user='root',              # or your username
-    password='DhyanV@09876', # replace with your MySQL password
-    database='inventory_project'  # replace if your DB name is different
+    user='root',              
+    password='(password)', # Use MySQL password
+    database='inventory_project'  
 )
 cursor = conn.cursor()
 
-# === Step 4: Create the table (optional - only if not done already) ===
+# Create the table 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS demand_data (
     date_time DATE,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS demand_data (
 )
 """)
 
-# === Step 5: Insert data row by row ===
+# Insert data row by row
 insert_query = """
 INSERT INTO demand_data (
     date_time, sku, quantity_demanded, customer_id, order_type,
@@ -48,6 +48,6 @@ for row in df.itertuples(index=False):
 conn.commit()
 print("✅ CSV data loaded successfully into MySQL!")
 
-# === Step 6: Close connection ===
+# Close connection
 cursor.close()
 conn.close()
